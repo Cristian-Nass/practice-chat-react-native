@@ -1,7 +1,18 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { useState } from "react";
 
 export default function App() {
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+
+  const onChangeEmail = (inputEmail: string) => setEmailInput(inputEmail);
+  const onChangePassword = (inputPass: string) => setPasswordInput(inputPass);
+  const logInKey = () => {
+    console.log("Email: ", emailInput);
+    console.log("Password: ", passwordInput);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{ color: "gray" }}>
@@ -10,13 +21,17 @@ export default function App() {
       <StatusBar style='auto' />
       <TextInput
         style={styles.input}
-        // onChangeText={onChangeNumber}
-        // value={number}
         placeholder='Email'
+        onChangeText={onChangeEmail}
+        // value={number}
       />
-      <TextInput style={styles.input} placeholder='Password' />
+      <TextInput
+        style={styles.input}
+        placeholder='Password'
+        onChangeText={onChangePassword}
+      />
       <View style={{ paddingVertical: 6 }}></View>
-      <Button title='Log in' />
+      <Button title='Log in' onPress={logInKey} />
       <View style={{ paddingVertical: 10 }}></View>
       <View
         style={{
