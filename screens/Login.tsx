@@ -2,20 +2,29 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
 import { useState } from "react";
 
-export default function Login() {
+export default function Login({ navigation }: any) {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [toggleButton, setToggleButton] = useState(false);
 
   const onChangeEmail = (inputEmail: string) => setEmailInput(inputEmail);
   const onChangePassword = (inputPass: string) => setPasswordInput(inputPass);
-  const logInKey = () => {
-    console.log("Email: ", emailInput);
-    console.log("Password: ", passwordInput);
+  const onLogIn = () => {
+    if (emailInput !== "" && passwordInput !== "") {
+      setToggleButton(true);
+      console.log("Email: ", emailInput);
+      console.log("Password: ", passwordInput);
+      setTimeout(() => {
+        setPasswordInput("");
+        setEmailInput("");
+        setToggleButton(false);
+      }, 1000);
+    }
   };
 
-  const onSignUp = () => {
-    console.log("onSignUp");
-  };
+  // const onSignUp = () => {
+
+  // };
 
   return (
     <View style={styles.container}>
@@ -27,17 +36,31 @@ export default function Login() {
         style={styles.input}
         placeholder='Email'
         onChangeText={onChangeEmail}
+        value={emailInput}
         // value={number}
       />
       <TextInput
         style={styles.input}
         placeholder='Password'
         onChangeText={onChangePassword}
+        value={passwordInput}
       />
       <View style={{ paddingVertical: 6 }}></View>
-      {/* <Button title='Log in' onPress={logInKey} />
+      {/* <Button title='Log in' onPress={onLogIn} />
        */}
-      <Pressable style={styles.button}>
+      <Pressable
+        style={[
+          styles.button,
+          {
+            backgroundColor:
+              toggleButton || emailInput === "" || passwordInput === ""
+                ? "#DFDFDF"
+                : "#2BC4DF",
+          },
+        ]}
+        onPress={onLogIn}
+        disabled={toggleButton}
+      >
         <Text style={styles.text}>Login</Text>
       </Pressable>
       <View style={{ paddingVertical: 10 }}></View>
@@ -49,7 +72,7 @@ export default function Login() {
         }}
       >
         <Pressable
-          onPress={onSignUp}
+          onPress={() => navigation.navigate("SignUp")}
           style={{
             flex: 1,
             paddingRight: 20,
@@ -97,7 +120,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#2BC4DF",
+    // backgroundColor: "#2BC4DF",
   },
   text: {
     fontSize: 16,
